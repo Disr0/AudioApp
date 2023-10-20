@@ -1,24 +1,22 @@
+using AudioApp.DAL;
+using AudioApp.Logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using AudioApp.DAL;
-using System.Linq;
-using AudioApp.Logic.Impl;
-using AudioApp.Logic.Contracts;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var spaSrcPath = "ClientApp";
 var corsPolicyName = "AllowAll";
 var builder = WebApplication.CreateBuilder(args);
 
-string connection = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContextFactory<AudioAppContext>(options => options.UseNpgsql(connection));
-builder.Services.AddSingleton<IMigrateService, MigrateService>();
+builder.Services.AddDbContextPool<AudioAppContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    o => o.MigrationsAssembly("AudioApp.DAL")));
 
+builder.Services.AddLogic();
 
 builder.Services.AddControllers();
 builder.Services.AddSpaStaticFiles(opt => opt.RootPath = $"{spaSrcPath}/dist");
@@ -43,9 +41,10 @@ app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapControllers();
+    endpoints.MapControllerRoute(
+    name: "default",
+    pattern: "{controller}/{action}/{id?}");
 });
-
 
 app.UseSpa(spa =>
 {
@@ -55,6 +54,5 @@ app.UseSpa(spa =>
         spa.UseReactDevelopmentServer(npmScript: "start");
 });
 
-//app.MapGet("/", (AudioAppContext db) => db.Users.ToList());
 
 app.Run();
