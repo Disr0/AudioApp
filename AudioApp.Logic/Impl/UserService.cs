@@ -28,7 +28,14 @@ public class UserService : IUserService
 
     public bool Delete(int id)
     {
-        throw new NotImplementedException();
+        var user = _dbContext.Users.Find(id);
+        if (user != null) 
+        {
+            _dbContext.Users.Remove(user);
+            bool result = _dbContext.SaveChanges() > 0 ? true : false;
+            return result;
+        }
+        return false;
     }
 
     public User Update(int id, User user)

@@ -27,4 +27,10 @@ public class UserController : ControllerBase
         if(_userService.Get(id) == null) return NotFound();      
         return Ok(_userService.Get(id));
     }
+
+    public ActionResult<bool> Delete(int id)
+    {
+        if (_userService.Delete(id) == false) return NotFound();
+        return Ok(_userService.Delete(id));
+    }
 }
