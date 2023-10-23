@@ -21,4 +21,10 @@ public class UserController : ControllerBase
     {
         return Ok(_userService.GetList());
     }
+
+    public ActionResult<User> Get(int id)
+    {
+        if(_userService.Get(id) == null) return NotFound();      
+        return Ok(_userService.Get(id));
+    }
 }

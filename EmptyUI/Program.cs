@@ -1,5 +1,7 @@
 using AudioApp.DAL;
 using AudioApp.Logic;
+using AudioApp.Logic.Contracts;
+using AudioApp.Logic.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -18,6 +20,7 @@ builder.Services.AddDbContextPool<AudioAppContext>(options =>
 
 builder.Services.AddLogic();
 
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllers();
 builder.Services.AddSpaStaticFiles(opt => opt.RootPath = $"{spaSrcPath}/dist");
 

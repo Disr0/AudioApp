@@ -17,7 +17,7 @@ public class UserService : IUserService
 
     public User Get(int id)
     {
-        throw new NotImplementedException();
+        return _dbContext.Users.Find(id);
     }
 
 
