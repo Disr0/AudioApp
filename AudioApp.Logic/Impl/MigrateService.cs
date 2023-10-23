@@ -12,10 +12,8 @@ namespace AudioApp.Logic.Impl
             _dbContext = dbContext;
         }
         public void MigrateDatabase()
-        {
-            var re = _dbContext.Users.Count();
-            
-            // _dbContext.Database.Migrate();
+        {   
+            _dbContext.Database.Migrate();
         }
     }
 }
