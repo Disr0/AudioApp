@@ -2,18 +2,17 @@
 using AudioApp.Logic.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace AudioApp.Logic.Impl
+namespace AudioApp.Logic.Impl;
+
+public class MigrateService : IMigrateService
 {
-    public class MigrateService : IMigrateService
+    readonly AudioAppContext _dbContext;
+    public MigrateService(AudioAppContext dbContext)
     {
-        readonly AudioAppContext _dbContext;
-        public MigrateService(AudioAppContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-        public void MigrateDatabase()
-        {   
-            _dbContext.Database.Migrate();
-        }
+        _dbContext = dbContext;
+    }
+    public void MigrateDatabase()
+    {   
+        _dbContext.Database.Migrate();
     }
 }
