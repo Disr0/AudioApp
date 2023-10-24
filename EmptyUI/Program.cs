@@ -20,7 +20,7 @@ builder.Services.AddDbContextPool<AudioAppContext>(options =>
 
 builder.Services.AddLogic();
 
-builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddControllers();
 builder.Services.AddSpaStaticFiles(opt => opt.RootPath = $"{spaSrcPath}/dist");
 

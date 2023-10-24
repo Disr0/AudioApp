@@ -1,7 +1,9 @@
 ﻿using AudioApp.Logic.Contracts;
+using AudioApp.Logic.Models;
 using AudioApp.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AudioApp.Api.Controllers;
 
@@ -17,20 +19,40 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<User>> GetList()
+    public ActionResult<IEnumerable<UserVm>> GetList()
     {
-        return Ok(_userService.GetList());
+        return Ok(_userService.GetList().Select( _ => new UserVm
+        {
+            Id = _.Id,
+            Name = _.Name,
+            Age = _.Age,
+            LastName = _.LastName
+        }));
     }
 
-    public ActionResult<User> Get(int id)
+    [HttpGet]
+    public ActionResult<UserVm> Get(int id)
     {
-        if(_userService.Get(id) == null) return NotFound();      
-        return Ok(_userService.Get(id));
+        var res = _userService.Get(id);
+        if (res == null) 
+            return NotFound();      
+
+
+
+        return Ok(new UserVm
+        {
+            Id = res.Id,
+            Name = res.Name,
+            Age = res.Age,
+            LastName = res.LastName
+        });
     }
 
-    public ActionResult<bool> Delete(int id)
+    [HttpDelete]
+    public ActionResult Delete(int id)
     {
-        if (_userService.Delete(id) == false) return NotFound();
-        return Ok(_userService.Delete(id));
+        _userService.Delete(id);
+      
+        return Ok();
     }
 }

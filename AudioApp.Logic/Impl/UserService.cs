@@ -1,6 +1,7 @@
 ﻿using AudioApp.DAL;
 using AudioApp.Logic.Contracts;
-using AudioApp.Model;
+using AudioApp.Logic.Extensions;
+using AudioApp.Logic.Models;
 
 namespace AudioApp.Logic.Impl;
 
@@ -12,34 +13,38 @@ public class UserService : IUserService
         _dbContext = dbContext;
     }
 
-    public IEnumerable<User> GetList()
-     => _dbContext.Users.ToArray();
+    public IEnumerable<UserBl> GetList()
+        => _dbContext.Users.Select(_ => _.toBl());
 
-    public User Get(int id)
+    public UserBl Get(int id)
     {
-        return _dbContext.Users.Find(id);
+        var res = _dbContext.Users.Find(id);
+        if (res is null)
+            return default;
+
+        return res.toBl();
     }
 
+    public UserBl Create(UserBl bl)
+    {
+        //  UserBl map to User
 
-    public User Create(User newUser)
+        throw new NotImplementedException();
+    }
+
+    public UserBl Update(int id, UserBl bl)
     {
         throw new NotImplementedException();
     }
 
-    public bool Delete(int id)
+    public void Delete(int id)
     {
         var user = _dbContext.Users.Find(id);
-        if (user != null) 
+        if (user != null)
         {
             _dbContext.Users.Remove(user);
-            bool result = _dbContext.SaveChanges() > 0 ? true : false;
-            return result;
+            _dbContext.SaveChanges();
         }
-        return false;
     }
 
-    public User Update(int id, User user)
-    {
-        throw new NotImplementedException();
-    }
 }

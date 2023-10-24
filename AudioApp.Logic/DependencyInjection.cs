@@ -9,7 +9,7 @@ namespace AudioApp.Logic
         public static IServiceCollection AddLogic(this IServiceCollection services)
         {
             services.AddScoped<IMigrateService, MigrateService>();
-
+            services.AddTransient<IUserService, UserService>();
             return services;
         }
     }

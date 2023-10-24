@@ -1,13 +1,13 @@
-﻿using AudioApp.Model;
+﻿using AudioApp.Logic.Models;
+using AudioApp.Model;
 
 namespace AudioApp.Logic.Contracts;
 
 public interface IUserService
 {
-    public IEnumerable<User> GetList();
-    public User Get(int id);
-    public User Create(User newUser);
-    public User Update(int id, User user);
-    public bool Delete(int id);
-
+    public IEnumerable<UserBl> GetList();
+    public UserBl Get(int id);
+    public UserBl Create(UserBl bl);
+    public UserBl Update(int id, UserBl bl);
+    public void Delete(int id);
 }
