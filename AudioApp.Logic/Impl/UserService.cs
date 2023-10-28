@@ -2,6 +2,7 @@
 using AudioApp.Logic.Contracts;
 using AudioApp.Logic.Extensions;
 using AudioApp.Logic.Models;
+using System.Reflection.Metadata;
 
 namespace AudioApp.Logic.Impl;
 
@@ -25,16 +26,45 @@ public class UserService : IUserService
         return res.toBl();
     }
 
+
     public UserBl Create(UserBl bl)
     {
-        //  UserBl map to User
-
-        throw new NotImplementedException();
+        if (bl.Age != 0 && bl.Name != null && bl.LastName != null && _dbContext.Users.Any(c => c.Id != bl.Id))
+        {
+            var newUser = new Model.User
+            {
+                Age = bl.Age,
+                Name = bl.Name,
+                LastName = bl.LastName,
+                Id = bl.Id
+            };
+            _dbContext.Users.Add(newUser);
+            _dbContext.SaveChanges();
+            return bl;
+        }
+        throw new FormatException(); 
     }
 
     public UserBl Update(int id, UserBl bl)
     {
-        throw new NotImplementedException();
+        if (bl.Age != 0 && bl.Name != null && bl.LastName != null && _dbContext.Users.Any(c => c.Id != bl.Id))
+        {
+            var newUser = new Model.User
+            {
+                Age = bl.Age,
+                Name = bl.Name,
+                LastName = bl.LastName,
+                Id = bl.Id
+            };
+            var result = _dbContext.Users.SingleOrDefault(u => u.Id == id);
+            if (result != null)
+            {
+                result = newUser;
+                _dbContext.SaveChanges();
+                return bl;
+            }
+        }
+        throw new FormatException();
     }
 
     public void Delete(int id)
