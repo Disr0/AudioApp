@@ -59,32 +59,26 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult Create(int id, string name, int age, string lastName)
+    public ActionResult<UserVm> Create(UserCreateVm vm)
     {
-        var userBl = new UserBl
+        var userBl = new UserCreateBl
         {
-            Age = age,
-            Name = name,
-            LastName = lastName,
-            Id = id,
+            Age = vm.Age,
+            Name = vm.Name,
+            LastName = vm.LastName
         };
         _userService.Create(userBl);
         return Ok(userBl);
     }
+
     [HttpPost]
-    public ActionResult Update(
-        [FromQuery]int userId, 
-        int id, 
-        string name, 
-        int age, 
-        string lastName)
+    public ActionResult<UserVm> Update([FromQuery]int userId, [FromBody]UserCreateVm vm)
     {
-        var userBl = new UserBl
+        var userBl = new UserUpdateBl
         {
-            Age = age,
-            Name = name,
-            LastName = lastName,
-            Id = id,
+            Age = vm.Age,
+            Name = vm.Name,
+            LastName = vm.LastName
         };
         _userService.Update(userId, userBl);
         return Ok(userBl);

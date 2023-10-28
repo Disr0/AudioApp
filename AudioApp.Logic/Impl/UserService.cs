@@ -27,41 +27,36 @@ public class UserService : IUserService
     }
 
 
-    public UserBl Create(UserBl bl)
+    public UserBl Create(UserCreateBl bl)
     {
-        if (bl.Age != 0 && bl.Name != null && bl.LastName != null && _dbContext.Users.Any(c => c.Id != bl.Id))
+        if (bl.Age != 0 && !string.IsNullOrEmpty(bl.Name.Trim()) && !string.IsNullOrEmpty(bl.LastName.Trim()))
         {
             var newUser = new Model.User
             {
                 Age = bl.Age,
                 Name = bl.Name,
-                LastName = bl.LastName,
-                Id = bl.Id
+                LastName = bl.LastName
             };
-            _dbContext.Users.Add(newUser);
+            var entryUser = _dbContext.Users.Add(newUser);
             _dbContext.SaveChanges();
-            return bl;
+            return entryUser.Entity.toBl();
         }
         throw new FormatException(); 
     }
 
-    public UserBl Update(int id, UserBl bl)
+    public UserBl Update(int id, UserUpdateBl bl)
     {
-        if (bl.Age != 0 && bl.Name != null && bl.LastName != null && _dbContext.Users.Any(c => c.Id != bl.Id))
+        if (bl.Age != 0 && !string.IsNullOrEmpty(bl.Name.Trim()) && !string.IsNullOrEmpty(bl.LastName.Trim()))
         {
-            var newUser = new Model.User
-            {
-                Age = bl.Age,
-                Name = bl.Name,
-                LastName = bl.LastName,
-                Id = bl.Id
-            };
-            var result = _dbContext.Users.SingleOrDefault(u => u.Id == id);
+            var result = _dbContext.Users.Find(id);
             if (result != null)
             {
-                result = newUser;
+                result.Age = bl.Age;
+                result.Name = bl.Name;
+                result.LastName = bl.LastName;
+
                 _dbContext.SaveChanges();
-                return bl;
+                return result.toBl();
             }
         }
         throw new FormatException();

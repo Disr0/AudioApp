@@ -7,7 +7,7 @@ public interface IUserService
 {
     public IEnumerable<UserBl> GetList();
     public UserBl Get(int id);
-    public UserBl Create(UserBl bl);
-    public UserBl Update(int id, UserBl bl);
+    public UserBl Create(UserCreateBl bl);
+    public UserBl Update(int id, UserUpdateBl bl);
     public void Delete(int id);
 }

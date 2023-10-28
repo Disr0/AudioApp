@@ -7,3 +7,17 @@ public class UserBl
     public string LastName { get; set; }
     public int Age { get; set; }
 }
+
+public class UserCreateBl
+{
+    public string Name { get; set; }
+    public string LastName { get; set; }
+    public int Age { get; set; }
+}
+
+public class UserUpdateBl
+{
+    public string Name { get; set; }
+    public string LastName { get; set; }
+    public int Age { get; set; }
+}
