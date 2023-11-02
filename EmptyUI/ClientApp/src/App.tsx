@@ -1,49 +1,20 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import { UserApi } from "./features/user/user.api";
-import type { UserVm } from "./features/user/user.models";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { UserTable } from "./features/user/components";
+import { Button, Form, Modal } from 'react-bootstrap';
+import { useState } from 'react';
+import { UserApi } from './features/user/user.api';
+import { AddUserModal } from './features/user/components/UserAddModal';
 
 
 export const App = () => {
-
-    const [users, setUsers] = useState<Array<UserVm>>([]);
-
-    const [isLoading, seIsLoading] = useState(false);
-
-    useEffect(() => {
-        seIsLoading(true);
-
-        UserApi.getList()
-            .then(res => {
-                setUsers(res.data);
-            })
-            .finally(() => {
-                seIsLoading(false)
-            });
-    });
+    const [show, setShow] = useState(false);
+    const handleOpen = () => setShow(true);
+    const createUser = (event : any) => UserApi.createUser();
 
     return <>
-        <div>new react app!</div>
-
-        <table>
-            <tr>
-                <th>id</th>
-                <th>name</th>
-                <th>age</th>
-            </tr>
-            {
-                isLoading
-                    ? '...Load'
-                    : users.map(x =>
-                        <tr>
-                            <td>{x.id}</td>
-                            <td>{x.name}</td>
-                            <td>{x.age}</td>
-                        </tr>
-                    )
-            }
-        </table>
-
+        <Button variant="primary" onClick={handleOpen} >Add user</Button>
+        <AddUserModal showState={show} setShow={setShow} />
+        <UserTable />
     </>;
 };
 
