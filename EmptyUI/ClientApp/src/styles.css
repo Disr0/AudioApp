@@ -1,0 +1,31 @@
+﻿.padding {
+    padding : 1%
+}
+
+.tableDiv {
+    float: left;
+    width: 75%;
+    clear: both;
+    padding-right : 10px;
+}
+
+.buttonsDiv {
+    float: right;
+    clear: both;
+    width: 25%;
+    padding-top:;
+}
+
+.button {
+    width: 100%;
+}
+
+.actions {
+    text-align: center;
+    text-anchor: middle;
+    padding: 9px 0;
+    color: white;
+    height: 40px;
+    background-color: #212529;
+    margin-bottom: 3.5px;
+}
